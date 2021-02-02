@@ -23,6 +23,8 @@ It organize the data in a common google contact csv, doing the following:
 
 * Remove old telephony operator flags as '041', '015'
 
+* Fix wrong DDD as '011' intead of '11'
+
 * Exclude duplicates
 
 * Uniforms the phone numbers

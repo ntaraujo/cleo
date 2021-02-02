@@ -7,17 +7,29 @@ from unicodedata import normalize
 
 
 def encode(word):
+    """
+    :type word: str
+    :return: The word without accents, in capslock, etc
+    :rtype: str
+    """
     ascii_name = normalize("NFKD", word).encode("ascii", errors="ignore").decode("ascii")
     return ascii_name.upper()
 
 
 def get_gender_data():
+    """
+    :return: A dictionary with names and its gender
+    """
     with open('data/nomes.csv') as name_and_gender_file:
         name_and_gender_reader = DictReader(name_and_gender_file)
         return {line["first_name"]: line["classification"] for line in name_and_gender_reader}
 
 
 def get_filters(filename):
+    """
+    :type filename: str
+    :return: A list with the normalized filters of file
+    """
     to_return = []
     with open(filename) as c:
         r = reader(c)
@@ -36,6 +48,11 @@ gender_data = get_gender_data()
 
 
 def get_name_and_gender(person):
+    """
+    :type person: str
+    :return: the likely main name and info if should pass or not of person
+    :rtype: tuple
+    """
     encoded_names = encode(person).split()
     ng = None
     for n in encoded_names:
@@ -54,10 +71,19 @@ def get_name_and_gender(person):
 
 
 def deepcopy(li):
+    """
+    :param li: A list with lists inside
+    :type li: list
+    :return: A copy of the list
+    """
     return [v[:] for v in li]
 
 
 def get_without_duplicates(data):
+    """
+    :type data: list
+    :return: A copy of the data without duplicated numbers
+    """
     data_copy = deepcopy(data)
     base = []
     for values in data:

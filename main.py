@@ -22,7 +22,7 @@ def get_gender_data():
     """
     with open('data/nomes.csv') as name_and_gender_file:
         name_and_gender_reader = DictReader(name_and_gender_file)
-        return {line["first_name"]: line["classification"] for line in name_and_gender_reader}
+        return {data["first_name"]: data["classification"] for data in name_and_gender_reader}
 
 
 def get_filters(filename):
@@ -33,8 +33,8 @@ def get_filters(filename):
     to_return = []
     with open(filename) as c:
         r = reader(c)
-        for row in r:
-            to_return.append(encode(row[0]))
+        for rrow in r:
+            to_return.append(encode(rrow[0]))
         return to_return
 
 
@@ -89,9 +89,9 @@ def get_without_duplicates(data):
     for values in data:
         v = values[1]
         if v in base:
-            for i, vc in enumerate(data_copy):
+            for ic, vc in enumerate(data_copy):
                 if v in vc:
-                    data_copy.pop(i)
+                    data_copy.pop(ic)
                     break
         else:
             base.append(v)

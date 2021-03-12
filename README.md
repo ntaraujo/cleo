@@ -23,7 +23,7 @@ It organize the data in a common google contact csv, doing the following:
 
 * Remove old telephony operator flags as '041', '015'
 
-* Fix wrong DDD as '011' intead of '11'
+* Fix wrong DDD as '011' instead of '11'
 
 * Exclude duplicates
 
@@ -31,4 +31,4 @@ It organize the data in a common google contact csv, doing the following:
 
 * Export the data to a csv file to be used after
 
-Then was possible to use "WhatsWeb" chrome extension and send important messages automatically
+Then, was possible to use "WhatsWeb" chrome extension and send important messages automatically

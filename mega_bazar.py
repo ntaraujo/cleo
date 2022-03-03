@@ -1,4 +1,5 @@
 from time import perf_counter
+
 tic = perf_counter()
 
 from csv import DictReader, writer, reader
@@ -47,27 +48,35 @@ passed = []
 gender_data = get_gender_data()
 
 
-def get_name_and_gender(person):
+def filter_names(person):
     """
     :type person: str
     :return: the likely main name and info if should pass or not of person
     :rtype: tuple
     """
     encoded_names = encode(person).split()
-    ng = None
+    np = None
     for n in encoded_names:
         if n in gender_data.keys():
-            ng = n, gender_data[n]
+            np = n, gender_data[n]
             break
-    if not ng:
-        ng = encoded_names[0], 'F'
-    if ng[0] in pass_names:
-        ng = ng[0], 'F'
-        passed.append([ng[0], person])
-    elif ng[0] in block_names:
-        ng = ng[0], 'M'
-        blocked.append([ng[0], person])
-    return ng
+    if not np:
+        np = encoded_names[0], True
+
+    # mega_bazar only
+    np = np[0], ('MANANCIAL' in encoded_names)
+
+    if ('PR' in encoded_names and 'TONINHO' in encoded_names) or \
+            ('ANA' in encoded_names and 'CHIQUETTI' in encoded_names):
+        np = np[0], True
+
+    """if np[0] in pass_names and not np[1]:
+        np = np[0], True
+        passed.append([np[0], person])
+    elif np[0] in block_names and np[1]:
+        np = np[0], False
+        blocked.append([np[0], person])"""
+    return np
 
 
 def deepcopy(li):
@@ -111,8 +120,8 @@ for row in csv_reader:
     if line_count != 0:  # if its not the column title
         init = row['Name'], row['Phone 1 - Value']
         if init[0] and init[1]:  # if enough values
-            first_name, gender = get_name_and_gender(init[0])
-            if gender == 'F':  # if its probably a woman
+            first_name, allow = filter_names(init[0])
+            if allow:  # if its probably a woman
                 phones = [sub('[^0-9]', '', num) for num in init[1].split(' ::: ')]
                 for phone in phones:
                     lenp = len(phone)
@@ -175,16 +184,19 @@ without_duplicates = get_without_duplicates(new_data)
 new_csv = open('output.csv', mode='w')
 new_writer = writer(new_csv)
 
+new_writer.writerow(("Contact Numbers", "Name", "Message"))
 for line in without_duplicates:
-    new_writer.writerow(line[:2])
+    new_writer.writerow(line[1::-1])
 new_csv.close()
+
+with open('output.txt', mode='w') as text:
+    text.write(','.join([line[1] for line in without_duplicates]))
 
 toc = perf_counter()  # main file exported
 
 # Debug and log
 
 from tabulate import tabulate
-
 
 if len(blocked) >= len(passed):
     table, to_add = deepcopy(blocked), passed

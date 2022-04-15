@@ -109,7 +109,7 @@ def get_without_duplicates(data):
 
 ddds = [str(n) for n in range(11, 20)]  # São Paulo DDDs
 
-csv_file = open('data/contacts_google.csv')
+csv_file = open('data/contacts_google.csv', encoding='utf-8')
 
 csv_reader = DictReader(csv_file)
 

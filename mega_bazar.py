@@ -190,7 +190,7 @@ for line in without_duplicates:
 new_csv.close()
 
 with open('output.txt', mode='w') as text:
-    text.write(','.join([line[1] for line in without_duplicates]))
+    text.write(','.join(['+' + line[1] for line in without_duplicates]))
 
 toc = perf_counter()  # main file exported
 

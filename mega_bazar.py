@@ -107,7 +107,7 @@ def get_without_duplicates(data):
     return data_copy
 
 
-ddds = [str(n) for n in range(11, 20)]  # São Paulo DDDs
+ddds = [str(n) for n in range(0, 100)]  # All DDDs
 
 csv_file = open('data/contacts_google.csv', encoding='utf-8')
 
